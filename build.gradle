@@ -1,0 +1,14 @@
+// Apply the java-library plugin to add support for Java Library
+apply plugin: 'java-library'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	// https://mvnrepository.com/artifact/net.bramp.ffmpeg/ffmpeg
+	compile group: 'net.bramp.ffmpeg', name: 'ffmpeg', version: '0.1'
+	
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+}
