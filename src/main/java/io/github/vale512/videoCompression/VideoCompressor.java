@@ -19,29 +19,34 @@ public class VideoCompressor {
 	private static final String AUDIO_CODEC = "aac"; 
 	private static final String VIDEO_CODEC = "libx264"; 
 	private static final int FRAME_RATE = 24;
-	
+
 	private FFmpeg ffmpeg; 
 	private final FFprobe ffprobe = getInstance(); 
 	private Path output;
 	private FFmpegProbeResult probeResult;
-	
+
 	public VideoCompressor(Path input, Path output) {
 		try {
-			this.probeResult = ffprobe.probe(input.toString());
-			this.output = output;
+			this.probeResult = this.ffprobe.probe(input.toString());
+		} catch (IOException e) {
+			System.err.println("ffprobe can not gather informations from " + input.toString() + ".\n"
+					+ "Is it correctly installed");
+			e.printStackTrace();
+		}
+		this.output = output;
+		try {
 			this.ffmpeg = new FFmpeg(FFMPEG_PATH);
 		} catch (IOException e) {
-			//FIXME better exception handling
 			System.err.println("Cannot fynd FFmpeg at " + FFMPEG_PATH);
 			e.printStackTrace();
-		} 
+		}
 	}
 
 	public void compress(int width, int height) {
 		FFmpegBuilder builder = new FFmpegBuilder()
 				.setInput(this.probeResult)    
 				.overrideOutputFiles(true)
-				.addOutput(output.toString()) 
+				.addOutput(this.output.toString()) 
 				.setFormat(MP4)
 				.setAudioCodec(AUDIO_CODEC)
 				.setAudioRate(SAMPLE_RATE) 

@@ -61,7 +61,6 @@ public class VideoCompressorTest {
 	@Parameter(2)
 	public int size;
 
-
 	@Before
 	public void setUp() throws Exception {
 		this.input= Paths.get("src/test/resources/samples/SampleVideo_1280x720_2mb.mp4");
